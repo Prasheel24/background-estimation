@@ -10,7 +10,12 @@ _generator_name = __name__ + "-" + ".".join(map(str, __version__))
 
 # Import the required libraries
 import numpy as np
-import cv2
+import sys, os
+try:
+    sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+except:
+    pass
+import cv2 
 from skimage import data, filters
 
 # Capture the Video for Background Estimation in VideoCapture object
@@ -52,8 +57,8 @@ captured_video.set(cv2.CAP_PROP_POS_FRAMES, 0)
 # Now convert median frame to grayscale
 gray_median_frame = cv2.cvtColor(median_frame, cv2.COLOR_BGR2GRAY)
 
-# cv2.imshow('Gray Scale Image', gray_median_frame)
-# cv2.waitKey(0)
+cv2.imshow('Gray Scale Image', gray_median_frame)
+cv2.waitKey(0)
 
 while(ret_val):
 
@@ -71,11 +76,12 @@ while(ret_val):
 		th, diff_frame = cv2.threshold(diff_frame, 30, 255, cv2.THRESH_BINARY)
 
 		# Display the final image
-		cv2.imshow('Difference Frame', diff_frame)
-		cv2.waitKey(21)
-
+		# cv2.imshow('Temp Frames',frame)
+		cv2.imshow('Difference Frames', diff_frame)
+		cv2.waitKey(20)
+cv2.waitKey(0)
 # Release VideoCapture object 
 captured_video.release()
 
 # Close all Windows
-# cv2.destroyAllWindows()
+cv2.destroyAllWindows()
